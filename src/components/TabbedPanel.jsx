@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import JobPanel from './JobPanel';
-import ResumePreview from './ResumePreview';
 
-export default function TabbedPanel({ jobDescription }) {
+export default function TabbedPanel({ jobDescription, resumeUrl }) {
   const [activeTab, setActiveTab] = useState('job');
 
   return (
@@ -34,9 +33,15 @@ export default function TabbedPanel({ jobDescription }) {
 
       <div className="flex-1 overflow-auto">
         {activeTab === 'job' ? (
-          <JobPanel jobDescription={jobDescription} />
+          <div className="p-6">
+            <JobPanel jobDescription={jobDescription} />
+          </div>
         ) : (
-          <ResumePreview />
+          <iframe
+            src={resumeUrl}
+            className="w-full h-full border-0"
+            title="Resume PDF"
+          />
         )}
       </div>
     </div>
