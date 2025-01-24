@@ -1,8 +1,12 @@
-const API_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'http://localhost:8000';
 
-export async function analyzeResume(formData) {
+export const analyzeResume = async (jobDescription, resumeFile) => {
+  const formData = new FormData();
+  formData.append('job_description', jobDescription);
+  formData.append('resume', resumeFile);
+
   try {
-    const response = await fetch(`${API_URL}/analyze`, {
+    const response = await fetch(`${API_BASE_URL}/analyze`, {
       method: 'POST',
       body: formData,
     });
@@ -13,22 +17,7 @@ export async function analyzeResume(formData) {
 
     return await response.json();
   } catch (error) {
-    console.error('API error:', error);
+    console.error('Error analyzing resume:', error);
     throw error;
   }
-}
-
-export async function getAnalysis(id) {
-  try {
-    const response = await fetch(`${API_URL}/analyses/${id}`);
-    
-    if (!response.ok) {
-      throw new Error('Failed to fetch analysis');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('API error:', error);
-    throw error;
-  }
-}
+};

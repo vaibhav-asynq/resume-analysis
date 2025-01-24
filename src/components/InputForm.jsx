@@ -4,17 +4,22 @@ export default function InputForm({ onSubmit }) {
   const [jobDescription, setJobDescription] = useState('');
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
-    // Here you would typically handle file upload and job description
-    // For now, we'll just simulate the analysis
-    setTimeout(() => {
+    setError(null);
+
+    try {
+      // For now, just pass the mock data
       onSubmit();
+    } catch (err) {
+      setError('Failed to analyze resume. Please try again.');
+      console.error(err);
+    } finally {
       setLoading(false);
-    }, 2000);
+    }
   };
 
   return (
@@ -23,6 +28,12 @@ export default function InputForm({ onSubmit }) {
         <div className="bg-white rounded-lg shadow-sm p-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-6">Resume Analysis</h1>
           
+          {error && (
+            <div className="mb-4 p-4 bg-red-50 text-red-700 rounded-md">
+              {error}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="jobDescription" className="block text-sm font-medium text-gray-700 mb-2">
